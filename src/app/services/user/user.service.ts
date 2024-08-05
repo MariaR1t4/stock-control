@@ -14,18 +14,24 @@ import { environment } from 'src/environments/environment';
 export class UserService {
   private API_URL = environment.API_URL;
 
-  constructor(private http: HttpClient, private cookie:CookieService) { }
-  signUpUser(requestDatas: ISignUpUserRequest): Observable<ISignUpUserResponse>{
-    return this.http.post<ISignUpUserResponse>(
-      `${this.API_URL}/user`,requestDatas
-    )
+  constructor(private http: HttpClient, private cookie: CookieService) { }
+
+  signupUser(requestDatas: ISignUpUserRequest): Observable<ISignUpUserResponse> {
+    console.log("estou funcionando na service")
+    return this.http.post<ISignUpUserResponse>(`${this.API_URL}/user`,
+    requestDatas
+  );
   }
-  authUser(requestDatas: IAuthRequest):Observable<IAuthResponse>{
-    return this.http.post<IAuthResponse>(`${this.API_URL}/auth`, requestDatas);
+
+  authUser(requestDatas: IAuthRequest): Observable<IAuthResponse> {
+    return this.http.post<IAuthResponse>(`${this.API_URL}/auth`,
+    requestDatas
+  );
+
   }
-  isLoggedIn():boolean{
-    //verificar se o usuário possui um token ou cookie
+
+  isLoggedIn(): boolean {
     const JWT_TOKEN = this.cookie.get('USER_INFO');
-    return JWT_TOKEN ? true : false
+    return JWT_TOKEN ? true : false;
   }
 }

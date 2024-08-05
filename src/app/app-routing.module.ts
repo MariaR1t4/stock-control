@@ -16,11 +16,9 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadChildren:()=> import('./modules/dashboard/dashboard.module').then(
-      (m)=>m.DashboardModule
-      ),
-    canActivate:[AuthGuardService]
-  }
+    loadChildren: () => import('./modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
+    canActivate: [AuthGuardService]
+  },
 ];
 
 @NgModule({

@@ -15,11 +15,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './modules/home/home.component';
+import { ToolbarNavigationComponent } from './shared/components/toolbar-navigation/toolbar-navigation.component';
+import { ToolbarModule } from 'primeng/toolbar';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,8 @@ import { HomeComponent } from './modules/home/home.component';
     CardModule,
     InputTextModule,
     ButtonModule,
-    ToastModule
+    ToastModule,
+    ToolbarModule
   ],
   providers: [
     CookieService,
