@@ -6,6 +6,6 @@ export interface IgetAllProductsResponse{
   price: string,
   category:{
     id: string,
-    name: string
+    name: string,
   }
 }
