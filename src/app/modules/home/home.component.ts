@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IAuthRequest } from 'src/app/models/interfaces/user/auth/IAuthRequest';
 import { ISignUpUserRequest } from 'src/app/models/interfaces/user/ISignUpUserRequest';
@@ -6,12 +6,14 @@ import { UserService } from 'src/app/services/user/user.service';
 import { CookieService } from 'ngx-cookie-service'
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
+  private destroy$ = new Subject<void>()
   loginCard = true;
 
   loginForm = this.formBuilder.group({
@@ -29,16 +31,20 @@ export class HomeComponent {
               private cookieService: CookieService,
               private messageService: MessageService,
               private router:Router){  }
+
   onSubmitForm():void{
     if(this.loginForm.value && this.loginForm.valid){
       this.userService.authUser(this.loginForm.value as IAuthRequest)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
       .subscribe({
         next: (response)=>{
           if(response){
             this.cookieService.set('USER_INFO',response?.token)
             this.loginForm.reset()
             this.router.navigate(['/dashboard'])
-            
+
             this.messageService.add({
               severity:'success',
               summary:'sucesso',
@@ -88,5 +94,9 @@ export class HomeComponent {
       }
       })
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
